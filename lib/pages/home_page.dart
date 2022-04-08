@@ -48,7 +48,6 @@ class UserWiget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       alignment: Alignment.center,
-      height: 70,
       width: double.infinity,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -66,7 +65,8 @@ class UserWiget extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: Colors.red,
         ),
-        title: Text('People'),
+        title: Text('Guido Leonel Cotelesso'),
+        subtitle: Text('Peso: 95kg - Size: 1.80mts - Sex: M'),
         trailing: Icon(Icons.arrow_forward),
       ),
     );
