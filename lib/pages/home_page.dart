@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:urbetrack/bloc/users/users_bloc.dart';
 import 'package:urbetrack/config/constants/routes_constants.dart';
+import 'package:urbetrack/models/user/user_model.dart';
 import 'package:urbetrack/widgets/entering_widget.dart';
+import 'package:urbetrack/utils/string_utils.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -15,19 +18,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
-    print('initstate');
-    final calculatorBloc = BlocProvider.of<UsersBloc>(context);
-    calculatorBloc.add(GetUsers());
     super.initState();
+    context.read<UsersBloc>().add(GetUsers());
+    scrollController.addListener(() {
+      if( (scrollController.position.pixels + 500) >= scrollController.position.maxScrollExtent){
+        if(scrollController.hasClients) context.read<UsersBloc>().add(GetUsersPage());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
 
     Future<void> _getUsers() async {
-      final calculatorBloc = BlocProvider.of<UsersBloc>(context);
+      final usersBloc = BlocProvider.of<UsersBloc>(context);
+      usersBloc.add(GetUsersPage());
     }
 
     return Scaffold(
@@ -44,30 +59,35 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocBuilder<UsersBloc, UsersState>(
         builder: (context, state) {
-          print('state $state');
-          if(state is LoadingUsers) {
-            return const Center(child: Text('Cargando'));
-          }
-          if(state is UsersGetted){
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                child: RefreshIndicator(
-                  onRefresh: () => _getUsers(),
-                  child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (context, item) {
-                      return const EnteringAnimation(
-                        child: UserWiget(),
-                        duration: Duration(milliseconds: 700)
-                      );
-                    },
+          switch (state.status) {
+            case UsersStatus.success:
+              if(state.users.isEmpty){
+                return const Center(child: Text('No se encontraron registros'));
+              }
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: RefreshIndicator(
+                    onRefresh: () => _getUsers(),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      controller: scrollController,
+                      itemCount: state.users.length,
+                      itemBuilder: (context, index) {
+                        return EnteringAnimation(
+                          child: UserWiget(user: state.users[index],),
+                          duration: const Duration(milliseconds: 700)
+                        );
+                      },
+                    ),
                   ),
-                ),
-              )
-            );
+                )
+              );
+            case UsersStatus.failure:
+              return const Center(child: Text('Ocurrio un error'));
+            default:
+              return const Center(child: CircularProgressIndicator());
           }
-          return const Center(child: Text('Algo salio mal, intente nuevamente'));
         }
       ),
     );
@@ -76,13 +96,15 @@ class _HomePageState extends State<HomePage> {
 
 
 class UserWiget extends StatelessWidget {
-  const UserWiget({ Key? key }) : super(key: key);
+  final UserModel user;
+
+  const UserWiget({ Key? key, required this.user }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, RoutesNames.userDetails);
+        Navigator.pushNamed(context, RoutesNames.userDetails, arguments: user);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -100,13 +122,16 @@ class UserWiget extends StatelessWidget {
             )
           ]
         ),
-        child: const ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/basic_avatar.jpeg')
+        child: ListTile(
+          leading: Hero(
+            tag: user.name,
+            child: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/basic_avatar.jpeg')
+            ),
           ),
-          title: Text('Guido Leonel Cotelesso'),
-          subtitle:  Text('Peso: 95kg - Size: 1.80mts - Sex: M'),
-          trailing:  Icon(Icons.arrow_forward),
+          title: Text(user.name),
+          subtitle:  Text('Peso: ${user.mass} - Size: ${user.height} - Sex: ${user.gender.capitalize()}'),
+          trailing:  const Icon(Icons.arrow_forward),
         ),
       ),
     );

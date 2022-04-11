@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urbetrack/bloc/user_details/user_details_bloc.dart';
 import 'package:urbetrack/bloc/users/users_bloc.dart';
 import 'package:urbetrack/config/constants/routes_constants.dart';
 import 'package:urbetrack/config/routes/routes.dart' as routes;
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: ( _ ) => UsersBloc())
+        BlocProvider(create: ( _ ) => UsersBloc()),
+        BlocProvider(create: ( _ ) => UserDetailsBloc())
       ],
       child: const MaterialApp(
         title: 'Material App',
@@ -22,4 +24,10 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+extension StringExtension on String {
+    String capitalize() {
+      return "${this[0].toUpperCase()}${substring(1)}";
+    }
 }
