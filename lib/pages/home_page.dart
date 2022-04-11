@@ -1,39 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:urbetrack/widgets/entering_widget.dart';
 
-class HomePage extends StatelessWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:urbetrack/bloc/users/users_bloc.dart';
+import 'package:urbetrack/config/constants/routes_constants.dart';
+import 'package:urbetrack/models/user/user_model.dart';
+import 'package:urbetrack/widgets/entering_widget.dart';
+import 'package:urbetrack/utils/string_utils.dart';
+
+
+class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<UsersBloc>().add(const UsersEvent.started());
+    scrollController.addListener(() {
+      if( (scrollController.position.pixels + 500) >= scrollController.position.maxScrollExtent){
+        if(scrollController.hasClients) context.read<UsersBloc>().add(const UsersEvent.started());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    Future<void> _getUsers() async {
+      final usersBloc = BlocProvider.of<UsersBloc>(context);
+      usersBloc.add(const UsersEvent.started());
+    }
+
     return Scaffold(
       appBar: AppBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: ElevatedButton(
-        child: const Text('Informar', style: TextStyle(fontSize: 18),),
-        style: ButtonStyle(
-          minimumSize: MaterialStateProperty.all(const Size(130, 50)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(13.0),
-            ),
-          ),
-        ),
-        onPressed: (){},
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
-          child: ListView.builder(
-            itemCount: 20,
-            itemBuilder: (context, item) {
-              return const EnteringAnimation(
-                child: UserWiget(),
-                duration: Duration(milliseconds: 700)
-              );
-            },
-          ),
+      drawer: Drawer(
+        child: ListView(
+          children: const <Widget>[
+            Text('Menu Uno'),
+            Text('Menu Dos'),
+            Text('Menu Tres'),
+            Text('Menu Cuatro'),
+          ],
         )
+      ),
+      body: BlocBuilder<UsersBloc, UsersState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case UsersStatus.success:
+              final users = state.users!;
+              if(users.isEmpty){
+                return const Center(child: Text('No se encontraron registros'));
+              }
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: RefreshIndicator(
+                    onRefresh: () => _getUsers(),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      controller: scrollController,
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        return EnteringAnimation(
+                          child: UserWiget(user: users[index],),
+                          duration: const Duration(milliseconds: 700)
+                        );
+                      },
+                    ),
+                  ),
+                )
+              );
+            case UsersStatus.failure:
+              return const Center(child: Text('Ocurrio un error'));
+            default:
+              return const Center(child: CircularProgressIndicator());
+          }
+        }
       ),
     );
   }
@@ -41,33 +97,43 @@ class HomePage extends StatelessWidget {
 
 
 class UserWiget extends StatelessWidget {
-  const UserWiget({ Key? key }) : super(key: key);
+  final UserModel user;
+
+  const UserWiget({ Key? key, required this.user }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      alignment: Alignment.center,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(40)),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            spreadRadius: 3,
-            blurRadius: 10,
-            offset: Offset(5,5)
-          )
-        ]
-      ),
-      child: const ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.red,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, RoutesNames.userDetails, arguments: user);
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        alignment: Alignment.center,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 3,
+              blurRadius: 10,
+              offset: Offset(5,5)
+            )
+          ]
         ),
-        title: Text('Guido Leonel Cotelesso'),
-        subtitle: Text('Peso: 95kg - Size: 1.80mts - Sex: M'),
-        trailing: Icon(Icons.arrow_forward),
+        child: ListTile(
+          leading: Hero(
+            tag: user.name,
+            child: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/basic_avatar.jpeg')
+            ),
+          ),
+          title: Text(user.name),
+          subtitle:  Text('Peso: ${user.mass} - Size: ${user.height} - Sex: ${user.gender.capitalize()}'),
+          trailing:  const Icon(Icons.arrow_forward),
+        ),
       ),
     );
   }
