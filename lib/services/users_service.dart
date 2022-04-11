@@ -3,7 +3,6 @@ import 'package:urbetrack/models/users_response/users_response_model.dart';
 
 class UsersService {
   static UsersService? _instance;
-
   factory UsersService() => _instance ??= UsersService._();
 
   UsersService._();

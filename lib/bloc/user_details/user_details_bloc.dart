@@ -1,10 +1,11 @@
-import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:urbetrack/models/planet/planet_model.dart';
 import 'package:urbetrack/models/user/user_model.dart';
 import 'package:urbetrack/models/vehicle/vehicle_model.dart';
 import 'package:urbetrack/services/user_details_service.dart';
 import 'package:urbetrack/utils/url_utils.dart';
+
+import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_details_event.dart';
 part 'user_details_state.dart';
@@ -35,7 +36,6 @@ class UserDetailsBloc extends Bloc<UserDetailsEvent, UserDetailsState> {
       for (var vehicle in event.user.vehicles) {
         vehiclesIds.add(getUrlLastId(vehicle));
       }
-
       final List<VehicleModel?> vehicles = await UserDetailsService().getVehicles(vehicles: vehiclesIds);
       return emit(
         state.copyWith(status: UserDetailsStatus.success, vehicles: vehicles)

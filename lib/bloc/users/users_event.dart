@@ -1,10 +1,6 @@
 part of 'users_bloc.dart';
 
-abstract class UsersEvent extends Equatable {
-  @override
-  List<Object> get props => [];
+@freezed
+class UsersEvent with _$UsersEvent {
+  const factory UsersEvent.started() = _Loading;
 }
-
-class GetUsers extends UsersEvent {}
-
-class GetUsersPage extends UsersEvent {}

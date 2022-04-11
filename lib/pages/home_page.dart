@@ -23,10 +23,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<UsersBloc>().add(GetUsers());
+    context.read<UsersBloc>().add(const UsersEvent.started());
     scrollController.addListener(() {
       if( (scrollController.position.pixels + 500) >= scrollController.position.maxScrollExtent){
-        if(scrollController.hasClients) context.read<UsersBloc>().add(GetUsersPage());
+        if(scrollController.hasClients) context.read<UsersBloc>().add(const UsersEvent.started());
       }
     });
   }
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 
     Future<void> _getUsers() async {
       final usersBloc = BlocProvider.of<UsersBloc>(context);
-      usersBloc.add(GetUsersPage());
+      usersBloc.add(const UsersEvent.started());
     }
 
     return Scaffold(
@@ -61,7 +61,8 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           switch (state.status) {
             case UsersStatus.success:
-              if(state.users.isEmpty){
+              final users = state.users!;
+              if(users.isEmpty){
                 return const Center(child: Text('No se encontraron registros'));
               }
               return Center(
@@ -72,10 +73,10 @@ class _HomePageState extends State<HomePage> {
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       controller: scrollController,
-                      itemCount: state.users.length,
+                      itemCount: users.length,
                       itemBuilder: (context, index) {
                         return EnteringAnimation(
-                          child: UserWiget(user: state.users[index],),
+                          child: UserWiget(user: users[index],),
                           duration: const Duration(milliseconds: 700)
                         );
                       },
