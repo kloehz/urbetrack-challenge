@@ -248,11 +248,13 @@ class _$UserDetailsStateTearOff {
   _UserDetailsState initial(
       {UserDetailsStatus status = UserDetailsStatus.success,
       PlanetModel? planet,
-      List<VehicleModel?>? vehicles}) {
+      List<VehicleModel?>? vehicles,
+      List<StarshipModel?>? starships}) {
     return _UserDetailsState(
       status: status,
       planet: planet,
       vehicles: vehicles,
+      starships: starships,
     );
   }
 }
@@ -265,25 +267,26 @@ mixin _$UserDetailsState {
   UserDetailsStatus get status => throw _privateConstructorUsedError;
   PlanetModel? get planet => throw _privateConstructorUsedError;
   List<VehicleModel?>? get vehicles => throw _privateConstructorUsedError;
+  List<StarshipModel?>? get starships => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(UserDetailsStatus status, PlanetModel? planet,
-            List<VehicleModel?>? vehicles)
+            List<VehicleModel?>? vehicles, List<StarshipModel?>? starships)
         initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(UserDetailsStatus status, PlanetModel? planet,
-            List<VehicleModel?>? vehicles)?
+            List<VehicleModel?>? vehicles, List<StarshipModel?>? starships)?
         initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(UserDetailsStatus status, PlanetModel? planet,
-            List<VehicleModel?>? vehicles)?
+            List<VehicleModel?>? vehicles, List<StarshipModel?>? starships)?
         initial,
     required TResult orElse(),
   }) =>
@@ -318,7 +321,8 @@ abstract class $UserDetailsStateCopyWith<$Res> {
   $Res call(
       {UserDetailsStatus status,
       PlanetModel? planet,
-      List<VehicleModel?>? vehicles});
+      List<VehicleModel?>? vehicles,
+      List<StarshipModel?>? starships});
 
   $PlanetModelCopyWith<$Res>? get planet;
 }
@@ -337,6 +341,7 @@ class _$UserDetailsStateCopyWithImpl<$Res>
     Object? status = freezed,
     Object? planet = freezed,
     Object? vehicles = freezed,
+    Object? starships = freezed,
   }) {
     return _then(_value.copyWith(
       status: status == freezed
@@ -351,6 +356,10 @@ class _$UserDetailsStateCopyWithImpl<$Res>
           ? _value.vehicles
           : vehicles // ignore: cast_nullable_to_non_nullable
               as List<VehicleModel?>?,
+      starships: starships == freezed
+          ? _value.starships
+          : starships // ignore: cast_nullable_to_non_nullable
+              as List<StarshipModel?>?,
     ));
   }
 
@@ -376,7 +385,8 @@ abstract class _$UserDetailsStateCopyWith<$Res>
   $Res call(
       {UserDetailsStatus status,
       PlanetModel? planet,
-      List<VehicleModel?>? vehicles});
+      List<VehicleModel?>? vehicles,
+      List<StarshipModel?>? starships});
 
   @override
   $PlanetModelCopyWith<$Res>? get planet;
@@ -398,6 +408,7 @@ class __$UserDetailsStateCopyWithImpl<$Res>
     Object? status = freezed,
     Object? planet = freezed,
     Object? vehicles = freezed,
+    Object? starships = freezed,
   }) {
     return _then(_UserDetailsState(
       status: status == freezed
@@ -412,6 +423,10 @@ class __$UserDetailsStateCopyWithImpl<$Res>
           ? _value.vehicles
           : vehicles // ignore: cast_nullable_to_non_nullable
               as List<VehicleModel?>?,
+      starships: starships == freezed
+          ? _value.starships
+          : starships // ignore: cast_nullable_to_non_nullable
+              as List<StarshipModel?>?,
     ));
   }
 }
@@ -420,7 +435,10 @@ class __$UserDetailsStateCopyWithImpl<$Res>
 
 class _$_UserDetailsState implements _UserDetailsState {
   const _$_UserDetailsState(
-      {this.status = UserDetailsStatus.success, this.planet, this.vehicles});
+      {this.status = UserDetailsStatus.success,
+      this.planet,
+      this.vehicles,
+      this.starships});
 
   @JsonKey()
   @override
@@ -429,10 +447,12 @@ class _$_UserDetailsState implements _UserDetailsState {
   final PlanetModel? planet;
   @override
   final List<VehicleModel?>? vehicles;
+  @override
+  final List<StarshipModel?>? starships;
 
   @override
   String toString() {
-    return 'UserDetailsState.initial(status: $status, planet: $planet, vehicles: $vehicles)';
+    return 'UserDetailsState.initial(status: $status, planet: $planet, vehicles: $vehicles, starships: $starships)';
   }
 
   @override
@@ -442,7 +462,8 @@ class _$_UserDetailsState implements _UserDetailsState {
             other is _UserDetailsState &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.planet, planet) &&
-            const DeepCollectionEquality().equals(other.vehicles, vehicles));
+            const DeepCollectionEquality().equals(other.vehicles, vehicles) &&
+            const DeepCollectionEquality().equals(other.starships, starships));
   }
 
   @override
@@ -450,7 +471,8 @@ class _$_UserDetailsState implements _UserDetailsState {
       runtimeType,
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(planet),
-      const DeepCollectionEquality().hash(vehicles));
+      const DeepCollectionEquality().hash(vehicles),
+      const DeepCollectionEquality().hash(starships));
 
   @JsonKey(ignore: true)
   @override
@@ -461,32 +483,32 @@ class _$_UserDetailsState implements _UserDetailsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(UserDetailsStatus status, PlanetModel? planet,
-            List<VehicleModel?>? vehicles)
+            List<VehicleModel?>? vehicles, List<StarshipModel?>? starships)
         initial,
   }) {
-    return initial(status, planet, vehicles);
+    return initial(status, planet, vehicles, starships);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(UserDetailsStatus status, PlanetModel? planet,
-            List<VehicleModel?>? vehicles)?
+            List<VehicleModel?>? vehicles, List<StarshipModel?>? starships)?
         initial,
   }) {
-    return initial?.call(status, planet, vehicles);
+    return initial?.call(status, planet, vehicles, starships);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(UserDetailsStatus status, PlanetModel? planet,
-            List<VehicleModel?>? vehicles)?
+            List<VehicleModel?>? vehicles, List<StarshipModel?>? starships)?
         initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial(status, planet, vehicles);
+      return initial(status, planet, vehicles, starships);
     }
     return orElse();
   }
@@ -524,7 +546,8 @@ abstract class _UserDetailsState implements UserDetailsState {
   const factory _UserDetailsState(
       {UserDetailsStatus status,
       PlanetModel? planet,
-      List<VehicleModel?>? vehicles}) = _$_UserDetailsState;
+      List<VehicleModel?>? vehicles,
+      List<StarshipModel?>? starships}) = _$_UserDetailsState;
 
   @override
   UserDetailsStatus get status;
@@ -532,6 +555,8 @@ abstract class _UserDetailsState implements UserDetailsState {
   PlanetModel? get planet;
   @override
   List<VehicleModel?>? get vehicles;
+  @override
+  List<StarshipModel?>? get starships;
   @override
   @JsonKey(ignore: true)
   _$UserDetailsStateCopyWith<_UserDetailsState> get copyWith =>

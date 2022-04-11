@@ -88,6 +88,23 @@ class _UserDetailsState extends State<UserDetails> {
                     : const Text('N/A')
                   : const Text('Cargando...')
                 ),
+                ListTile(
+                  leading: const SizedBox(
+                    height: double.infinity,
+                    child: Icon(Icons.flight)
+                  ),
+                  title: state.starships != null
+                  ? state.starships!.isNotEmpty
+                    ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: 
+                        state.starships!.map((starship) {
+                          return Text(starship!.name);
+                        }).toList()
+                    )
+                    : const Text('N/A')
+                  : const Text('Cargando...')
+                ),
               ]).toList(),
             );
           },

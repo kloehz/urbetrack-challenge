@@ -7,6 +7,7 @@ class UserDetailsState with _$UserDetailsState {
   const factory UserDetailsState.initial({
     @Default(UserDetailsStatus.success) UserDetailsStatus status,
     PlanetModel? planet,
-    List<VehicleModel?>? vehicles
+    List<VehicleModel?>? vehicles,
+    List<StarshipModel?>? starships
   }) = _UserDetailsState;
 }
