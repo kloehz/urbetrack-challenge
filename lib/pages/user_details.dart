@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urbetrack/bloc/network/network_bloc.dart';
 
 import 'package:urbetrack/bloc/user_details/user_details_bloc.dart';
 import 'package:urbetrack/models/user/user_model.dart';
@@ -24,20 +25,24 @@ class _UserDetailsState extends State<UserDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        floatingActionButton: ElevatedButton(
-          child: const Text(
-            'Reportar',
-            style: TextStyle(fontSize: 18),
-          ),
-          style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all(const Size(130, 50)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13.0),
+        floatingActionButton: BlocBuilder<NetworkBloc, NetworkState>(
+          builder: (context, state) {
+            return ElevatedButton(
+              child: Text(
+                state.networkStatus ? 'Reportar' : 'Offline',
+                style: const TextStyle(fontSize: 18),
               ),
-            ),
-          ),
-          onPressed: () {},
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(const Size(130, 50)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(13.0),
+                  ),
+                ),
+              ),
+              onPressed: state.networkStatus ? (){} : null,
+            );
+          },
         ),
         body: BlocBuilder<UserDetailsBloc, UserDetailsState>(
           builder: (context, state) {
@@ -69,46 +74,37 @@ class _UserDetailsState extends State<UserDetails> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.location_city_outlined),
-                  title: Text(state.planet != null ? state.planet!.name : 'Cargando...'),
+                  title: Text(state.planet != null
+                      ? state.planet!.name
+                      : 'Cargando...'),
                 ),
                 ListTile(
-                  leading: const SizedBox(
-                    height: double.infinity,
-                    child: Icon(Icons.car_repair)
-                  ),
-                  title: state.vehicles != null
-                  ? state.vehicles!.isNotEmpty
-                    ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: 
-                        state.vehicles!.map((vehicle) {
-                          return Text(vehicle!.name);
-                        }).toList()
-                    )
-                    : const Text('N/A')
-                  : const Text('Cargando...')
-                ),
+                    leading: const SizedBox(
+                        height: double.infinity, child: Icon(Icons.car_repair)),
+                    title: state.vehicles != null
+                        ? state.vehicles!.isNotEmpty
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: state.vehicles!.map((vehicle) {
+                                  return Text(vehicle!.name);
+                                }).toList())
+                            : const Text('N/A')
+                        : const Text('Cargando...')),
                 ListTile(
-                  leading: const SizedBox(
-                    height: double.infinity,
-                    child: Icon(Icons.flight)
-                  ),
-                  title: state.starships != null
-                  ? state.starships!.isNotEmpty
-                    ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: 
-                        state.starships!.map((starship) {
-                          return Text(starship!.name);
-                        }).toList()
-                    )
-                    : const Text('N/A')
-                  : const Text('Cargando...')
-                ),
+                    leading: const SizedBox(
+                        height: double.infinity, child: Icon(Icons.flight)),
+                    title: state.starships != null
+                        ? state.starships!.isNotEmpty
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: state.starships!.map((starship) {
+                                  return Text(starship!.name);
+                                }).toList())
+                            : const Text('N/A')
+                        : const Text('Cargando...')),
               ]).toList(),
             );
           },
-        )
-    );
+        ));
   }
 }
