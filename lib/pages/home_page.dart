@@ -91,9 +91,10 @@ class _HomePageState extends State<HomePage> {
                   controller: scrollController,
                   itemCount: users.length,
                   itemBuilder: (context, index) {
+                    String key = users.keys.elementAt(index);
                     return EnteringAnimation(
                       child: UserWiget(
-                        user: users[index],
+                        user: users[key]!,
                       ),
                       duration: const Duration(milliseconds: 700)
                     );

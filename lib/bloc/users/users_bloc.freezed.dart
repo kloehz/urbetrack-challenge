@@ -343,7 +343,8 @@ class _$UsersStateTearOff {
   const _$UsersStateTearOff();
 
   _UsersState initial(
-      {UsersStatus status = UsersStatus.loading, List<UserModel>? users}) {
+      {UsersStatus status = UsersStatus.loading,
+      Map<String, UserModel>? users}) {
     return _UsersState(
       status: status,
       users: users,
@@ -357,22 +358,24 @@ const $UsersState = _$UsersStateTearOff();
 /// @nodoc
 mixin _$UsersState {
   UsersStatus get status => throw _privateConstructorUsedError;
-  List<UserModel>? get users => throw _privateConstructorUsedError;
+  Map<String, UserModel>? get users => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(UsersStatus status, List<UserModel>? users)
+    required TResult Function(UsersStatus status, Map<String, UserModel>? users)
         initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(UsersStatus status, List<UserModel>? users)? initial,
+    TResult Function(UsersStatus status, Map<String, UserModel>? users)?
+        initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(UsersStatus status, List<UserModel>? users)? initial,
+    TResult Function(UsersStatus status, Map<String, UserModel>? users)?
+        initial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -403,7 +406,7 @@ abstract class $UsersStateCopyWith<$Res> {
   factory $UsersStateCopyWith(
           UsersState value, $Res Function(UsersState) then) =
       _$UsersStateCopyWithImpl<$Res>;
-  $Res call({UsersStatus status, List<UserModel>? users});
+  $Res call({UsersStatus status, Map<String, UserModel>? users});
 }
 
 /// @nodoc
@@ -427,7 +430,7 @@ class _$UsersStateCopyWithImpl<$Res> implements $UsersStateCopyWith<$Res> {
       users: users == freezed
           ? _value.users
           : users // ignore: cast_nullable_to_non_nullable
-              as List<UserModel>?,
+              as Map<String, UserModel>?,
     ));
   }
 }
@@ -438,7 +441,7 @@ abstract class _$UsersStateCopyWith<$Res> implements $UsersStateCopyWith<$Res> {
           _UsersState value, $Res Function(_UsersState) then) =
       __$UsersStateCopyWithImpl<$Res>;
   @override
-  $Res call({UsersStatus status, List<UserModel>? users});
+  $Res call({UsersStatus status, Map<String, UserModel>? users});
 }
 
 /// @nodoc
@@ -464,7 +467,7 @@ class __$UsersStateCopyWithImpl<$Res> extends _$UsersStateCopyWithImpl<$Res>
       users: users == freezed
           ? _value.users
           : users // ignore: cast_nullable_to_non_nullable
-              as List<UserModel>?,
+              as Map<String, UserModel>?,
     ));
   }
 }
@@ -478,7 +481,7 @@ class _$_UsersState implements _UsersState {
   @override
   final UsersStatus status;
   @override
-  final List<UserModel>? users;
+  final Map<String, UserModel>? users;
 
   @override
   String toString() {
@@ -508,7 +511,7 @@ class _$_UsersState implements _UsersState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(UsersStatus status, List<UserModel>? users)
+    required TResult Function(UsersStatus status, Map<String, UserModel>? users)
         initial,
   }) {
     return initial(status, users);
@@ -517,7 +520,8 @@ class _$_UsersState implements _UsersState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(UsersStatus status, List<UserModel>? users)? initial,
+    TResult Function(UsersStatus status, Map<String, UserModel>? users)?
+        initial,
   }) {
     return initial?.call(status, users);
   }
@@ -525,7 +529,8 @@ class _$_UsersState implements _UsersState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(UsersStatus status, List<UserModel>? users)? initial,
+    TResult Function(UsersStatus status, Map<String, UserModel>? users)?
+        initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -564,13 +569,13 @@ class _$_UsersState implements _UsersState {
 }
 
 abstract class _UsersState implements UsersState {
-  const factory _UsersState({UsersStatus status, List<UserModel>? users}) =
-      _$_UsersState;
+  const factory _UsersState(
+      {UsersStatus status, Map<String, UserModel>? users}) = _$_UsersState;
 
   @override
   UsersStatus get status;
   @override
-  List<UserModel>? get users;
+  Map<String, UserModel>? get users;
   @override
   @JsonKey(ignore: true)
   _$UsersStateCopyWith<_UsersState> get copyWith =>

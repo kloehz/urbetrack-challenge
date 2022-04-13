@@ -23,8 +23,15 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
     try {
       if(state.users == null && state.status == UsersStatus.loading) {
         final UsersResponseModel users = await UsersService().getUsers();
+
+        // Parse this for manage it by id and not iterate it everytime
+        final Map<String, UserModel> usersParsed = {};
+        for(UserModel user in users.results ){
+          usersParsed[user.name] = user;
+        }
+
         return emit(
-          state.copyWith(status: UsersStatus.success, users: users.results)
+          state.copyWith(status: UsersStatus.success, users: usersParsed)
         );
       }
     } catch (e) {
@@ -42,6 +49,7 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
     try {
       if(event.user.homeworld.startsWith('http')) {
         emit(state.copyWith(status: UsersStatus.updatingUser));
+
         final planetId = getUrlLastId(event.user.homeworld);
         final PlanetModel planet = await UserDetailsService().getPlanet(planetId: planetId);
 
@@ -69,29 +77,32 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
           starships.map((starship) => starShipsParsed.add(starship!.name)).toList();
         }
 
+        final usersParsed = state.users;
+        usersParsed![event.user.name] = event.user.copyWith(
+          vehicles: vehiclesParsed,
+          homeworld: planet.name,
+          starships: starShipsParsed
+        );
+
         emit(
           state.copyWith(
-            users: state.users!.map((user) => 
-              user.name == event.user.name
-                ? event.user.copyWith(homeworld: planet.name, vehicles: vehiclesParsed, starships: starShipsParsed)
-                : user
-            ).toList(),
+            users: usersParsed,
             status: UsersStatus.success
           )
         );
       }
-    } catch (err) {
+    } catch (err, stackTrace) {
       //Log
       emit(state.copyWith(status: UsersStatus.failure));
     }
   }
 
-
   @override
   UsersState? fromJson(Map<String, dynamic> json) {
     try {
-      final List<UserModel> usersList = [];
-      json['users'].map((user) => usersList.add(UserModel.fromJson(user))).toList();
+      final Map<String, UserModel> usersList = {};
+      json['users'].map((user) => usersList[user['name']] = UserModel.fromJson(user)).toList();
+
       return UsersState.initial(users: usersList, status: UsersStatus.success);
     } catch (err) {
       return null;

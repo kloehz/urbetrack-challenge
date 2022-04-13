@@ -49,7 +49,7 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
         builder: (context, state) {
           UserModel user = widget.user;
           if(state.status == UsersStatus.success){
-            user = state.users!.firstWhere((user) => user.name == widget.user.name);
+            user = state.users![widget.user.name]!; // state.users!.firstWhere((user) => user.name == widget.user.name);
             return UserDetailedInfo(user: user, isLoading: false);
           }
           return UserDetailedInfo(user: user, isLoading: true);
