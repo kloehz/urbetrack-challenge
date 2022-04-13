@@ -22,12 +22,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<UsersBloc>().add(const UsersEvent.started());
+    context.read<UsersBloc>().add(const UsersEvent.fetchUsers());
     scrollController.addListener(() {
-      if ((scrollController.position.pixels + 500) >=
-          scrollController.position.maxScrollExtent) {
-        if (scrollController.hasClients)
-          context.read<UsersBloc>().add(const UsersEvent.started());
+      if ((scrollController.position.pixels + 10) >= scrollController.position.maxScrollExtent) {
+        // if (scrollController.hasClients)
+        //   context.read<UsersBloc>().add(const UsersEvent.fetchUsers());
       }
     });
   }
@@ -40,10 +39,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _getUsers() async {
-      final usersBloc = BlocProvider.of<UsersBloc>(context);
-      usersBloc.add(const UsersEvent.started());
-    }
     final internetStatus = BlocProvider.of<NetworkBloc>(context);
 
     return Scaffold(
@@ -110,6 +105,11 @@ class _HomePageState extends State<HomePage> {
         }
       }),
     );
+  }
+
+  Future<void> _getUsers() async {
+    // final usersBloc = BlocProvider.of<UsersBloc>(context);
+    // usersBloc.add(const UsersEvent.fetchUsers());
   }
 }
 
