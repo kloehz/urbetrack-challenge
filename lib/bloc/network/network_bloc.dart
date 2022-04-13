@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -21,10 +20,10 @@ class NetworkBloc extends HydratedBloc<NetworkEvent, NetworkState> {
   NetworkState? fromJson(Map<String, dynamic> json) {
     try{
       return NetworkState.status(networkStatus: json['network'] as bool);
-    }catch(err){
-      print('se rompio network: $err');
-      return null;
+    }catch(_){
+      //Log
     }
+    return null;
   }
 
   @override

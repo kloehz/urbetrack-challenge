@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
 import 'package:urbetrack/models/planet/planet_model.dart';
 import 'package:urbetrack/models/starship/starship_model.dart';
 import 'package:urbetrack/models/user/user_model.dart';
 import 'package:urbetrack/models/users_response/users_response_model.dart';
-import 'package:urbetrack/models/vehicle/vehicle_model.dart';
 import 'package:urbetrack/services/user_details_service.dart';
 import 'package:urbetrack/services/users_service.dart';
 import 'package:urbetrack/utils/url_utils.dart';
@@ -21,7 +21,7 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
 
   void _getUsers(Emitter<UsersState> emit, _FetchUsers event) async {
     try {
-      if(state.status == UsersStatus.loading) {
+      if(state.users == null && state.status == UsersStatus.loading) {
         final UsersResponseModel users = await UsersService().getUsers();
         return emit(
           state.copyWith(status: UsersStatus.success, users: users.results)
@@ -82,7 +82,6 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
       }
     } catch (err) {
       //Log
-      print('se rompio algo xd: $err');
       emit(state.copyWith(status: UsersStatus.failure));
     }
   }

@@ -50,73 +50,9 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
           UserModel user = widget.user;
           if(state.status == UsersStatus.success){
             user = state.users!.firstWhere((user) => user.name == widget.user.name);
+            return UserDetailedInfo(user: user, isLoading: false);
           }
-          return ListView(
-            children: ListTile.divideTiles(context: context, tiles: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 50),
-                height: 180,
-                child: FittedBox(
-                  child: Hero(
-                    tag: widget.user.name,
-                    child: const CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/basic_avatar.jpeg')
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: Text(widget.user.hair_color.capitalize()),
-              ),
-              ListTile(
-                leading: const Icon(Icons.accessibility_new_outlined),
-                title: Text(widget.user.skin_color.capitalize()),
-              ),
-              ListTile(
-                leading: const Icon(Icons.remove_red_eye_outlined),
-                title: Text(widget.user.eye_color.capitalize()),
-              ),
-              ListTile(
-                leading: const Icon(Icons.location_city_outlined),
-                title: Text(user.homeworld.startsWith('https')
-                  ? 'Cargando...'
-                  : user.homeworld
-                ),
-              ),
-              ListTile(
-                leading: const SizedBox(
-                  height: double.infinity,
-                  child: Icon(Icons.car_repair)
-                ),
-                title: user.vehicles.isNotEmpty
-                  ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: user.vehicles.map((vehicle) {
-                      return vehicle.startsWith('http')
-                      ? const Text('Cargando...')
-                      : Text(vehicle);
-                    }).toList()
-                  )
-                  : const Text('N/A')
-              ),
-              ListTile(
-                leading: const SizedBox(
-                  height: double.infinity, child: Icon(Icons.flight)
-                ),
-                title: user.starships.isNotEmpty
-                  ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: user.starships.map((starship) {
-                      return starship.startsWith('http')
-                      ? const Text('Cargando')
-                      : Text(starship);
-                    }).toList()
-                  )
-                  : const Text('N/A')
-              ),
-            ]).toList(),
-          );
+          return UserDetailedInfo(user: user, isLoading: true);
         },
       )
     );
@@ -124,4 +60,91 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class UserDetailedInfo extends StatelessWidget {
+  final UserModel user;
+  final bool isLoading;
+  
+  const UserDetailedInfo({
+    Key? key,
+    required this.user,
+    required this.isLoading
+  }) : super(key: key);
+
+  List<Text> parseInfo(List<String> data) {
+    return data.map((starship) {
+      return starship.startsWith('http')
+      ? const Text('Cargando')
+      : Text(starship);
+    }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final String homeworld = user.homeworld.startsWith('http') ? 'Cargando...' : user.homeworld;
+    final List<Text> vehicles = parseInfo(user.vehicles);
+    final List<Text> starships = parseInfo(user.starships);
+
+    return ListView(
+      children: ListTile.divideTiles(context: context, tiles: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          height: 180,
+          child: FittedBox(
+            child: Hero(
+              tag: user.name,
+              child: const CircleAvatar(
+                backgroundImage: AssetImage('assets/images/basic_avatar.jpeg')
+              ),
+            ),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.person),
+          title: Text(user.hair_color.capitalize()),
+        ),
+        ListTile(
+          leading: const Icon(Icons.accessibility_new_outlined),
+          title: Text(user.skin_color.capitalize()),
+        ),
+        ListTile(
+          leading: const Icon(Icons.remove_red_eye_outlined),
+          title: Text(user.eye_color.capitalize()),
+        ),
+        ListTile(
+          leading: const Icon(Icons.location_city_outlined),
+          title: Text(homeworld),
+        ),
+        ListTile(
+          leading: const SizedBox(
+            height: double.infinity,
+            child: Icon(Icons.car_repair)
+          ),
+          title: user.vehicles.isNotEmpty
+            ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: isLoading
+                ? [ const Text('Cargando') ]
+                :  vehicles
+            )
+            : const Text('N/A')
+        ),
+        ListTile(
+          leading: const SizedBox(
+            height: double.infinity, child: Icon(Icons.flight)
+          ),
+          title: user.starships.isNotEmpty
+            ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: isLoading
+                ? [ const Text('Cargando') ]
+                : starships
+            )
+            : const Text('N/A')
+        ),
+      ]).toList(),
+    );
+  }
 }

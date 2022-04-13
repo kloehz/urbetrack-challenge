@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 20
                     )),
                     Switch(
+                      activeColor: Colors.green,
                       value: state.networkStatus,
                       onChanged: (value) =>
                         internetStatus.add(NetworkEvent.networkChanged(value))
