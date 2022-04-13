@@ -83,21 +83,23 @@ class _HomePageState extends State<HomePage> {
               return const Center(child: Text('No se encontraron registros'));
             }
             return Center(
-                child: RefreshIndicator(
-              onRefresh: () => _getUsers(),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                controller: scrollController,
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  return EnteringAnimation(
+              child: RefreshIndicator(
+                onRefresh: () => _getUsers(),
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  controller: scrollController,
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    return EnteringAnimation(
                       child: UserWiget(
                         user: users[index],
                       ),
-                      duration: const Duration(milliseconds: 700));
-                },
-              ),
-            ));
+                      duration: const Duration(milliseconds: 700)
+                    );
+                  },
+                ),
+              )
+            );
           case UsersStatus.failure:
             return const Center(child: Text('Ocurrio un error'));
           default:
@@ -129,15 +131,17 @@ class UserWiget extends StatelessWidget {
         alignment: Alignment.center,
         width: double.infinity,
         decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey,
-                  spreadRadius: 3,
-                  blurRadius: 10,
-                  offset: Offset(5, 5))
-            ]),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 3,
+              blurRadius: 10,
+              offset: Offset(5, 5)
+            )
+          ]
+        ),
         child: ListTile(
           leading: Hero(
             tag: user.name,

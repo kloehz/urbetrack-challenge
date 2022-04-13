@@ -22,8 +22,10 @@ class _$UsersEventTearOff {
     return const _FetchUsers();
   }
 
-  _FetchUserDetails fetchUserDetails() {
-    return const _FetchUserDetails();
+  _FetchUserDetails fetchUserDetails({required UserModel user}) {
+    return _FetchUserDetails(
+      user: user,
+    );
   }
 }
 
@@ -35,19 +37,19 @@ mixin _$UsersEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchUsers,
-    required TResult Function() fetchUserDetails,
+    required TResult Function(UserModel user) fetchUserDetails,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchUsers,
-    TResult Function()? fetchUserDetails,
+    TResult Function(UserModel user)? fetchUserDetails,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchUsers,
-    TResult Function()? fetchUserDetails,
+    TResult Function(UserModel user)? fetchUserDetails,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -129,7 +131,7 @@ class _$_FetchUsers implements _FetchUsers {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchUsers,
-    required TResult Function() fetchUserDetails,
+    required TResult Function(UserModel user) fetchUserDetails,
   }) {
     return fetchUsers();
   }
@@ -138,7 +140,7 @@ class _$_FetchUsers implements _FetchUsers {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchUsers,
-    TResult Function()? fetchUserDetails,
+    TResult Function(UserModel user)? fetchUserDetails,
   }) {
     return fetchUsers?.call();
   }
@@ -147,7 +149,7 @@ class _$_FetchUsers implements _FetchUsers {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchUsers,
-    TResult Function()? fetchUserDetails,
+    TResult Function(UserModel user)? fetchUserDetails,
     required TResult orElse(),
   }) {
     if (fetchUsers != null) {
@@ -197,6 +199,9 @@ abstract class _$FetchUserDetailsCopyWith<$Res> {
   factory _$FetchUserDetailsCopyWith(
           _FetchUserDetails value, $Res Function(_FetchUserDetails) then) =
       __$FetchUserDetailsCopyWithImpl<$Res>;
+  $Res call({UserModel user});
+
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -209,54 +214,84 @@ class __$FetchUserDetailsCopyWithImpl<$Res>
 
   @override
   _FetchUserDetails get _value => super._value as _FetchUserDetails;
+
+  @override
+  $Res call({
+    Object? user = freezed,
+  }) {
+    return _then(_FetchUserDetails(
+      user: user == freezed
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+    ));
+  }
+
+  @override
+  $UserModelCopyWith<$Res> get user {
+    return $UserModelCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$_FetchUserDetails implements _FetchUserDetails {
-  const _$_FetchUserDetails();
+  const _$_FetchUserDetails({required this.user});
+
+  @override
+  final UserModel user;
 
   @override
   String toString() {
-    return 'UsersEvent.fetchUserDetails()';
+    return 'UsersEvent.fetchUserDetails(user: $user)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _FetchUserDetails);
+        (other.runtimeType == runtimeType &&
+            other is _FetchUserDetails &&
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(user));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FetchUserDetailsCopyWith<_FetchUserDetails> get copyWith =>
+      __$FetchUserDetailsCopyWithImpl<_FetchUserDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchUsers,
-    required TResult Function() fetchUserDetails,
+    required TResult Function(UserModel user) fetchUserDetails,
   }) {
-    return fetchUserDetails();
+    return fetchUserDetails(user);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchUsers,
-    TResult Function()? fetchUserDetails,
+    TResult Function(UserModel user)? fetchUserDetails,
   }) {
-    return fetchUserDetails?.call();
+    return fetchUserDetails?.call(user);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchUsers,
-    TResult Function()? fetchUserDetails,
+    TResult Function(UserModel user)? fetchUserDetails,
     required TResult orElse(),
   }) {
     if (fetchUserDetails != null) {
-      return fetchUserDetails();
+      return fetchUserDetails(user);
     }
     return orElse();
   }
@@ -294,7 +329,13 @@ class _$_FetchUserDetails implements _FetchUserDetails {
 }
 
 abstract class _FetchUserDetails implements UsersEvent {
-  const factory _FetchUserDetails() = _$_FetchUserDetails;
+  const factory _FetchUserDetails({required UserModel user}) =
+      _$_FetchUserDetails;
+
+  UserModel get user;
+  @JsonKey(ignore: true)
+  _$FetchUserDetailsCopyWith<_FetchUserDetails> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
