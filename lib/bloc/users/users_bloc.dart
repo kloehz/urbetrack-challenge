@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -91,7 +93,7 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
           )
         );
       }
-    } catch (err, stackTrace) {
+    } catch (err) {
       //Log
       emit(state.copyWith(status: UsersStatus.failure));
     }
@@ -100,17 +102,25 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
   @override
   UsersState? fromJson(Map<String, dynamic> json) {
     try {
+      final users = Map<String, dynamic>.from(json['users']);
       final Map<String, UserModel> usersList = {};
-      json['users'].map((user) => usersList[user['name']] = UserModel.fromJson(user)).toList();
+
+      for(String key in users.keys){
+        usersList[json['users'][key]['name']] = UserModel.fromJson(json['users'][key]);
+      }
 
       return UsersState.initial(users: usersList, status: UsersStatus.success);
     } catch (err) {
+      print('err: $err');
       return null;
     }
   }
 
   @override
   Map<String, dynamic>? toJson(UsersState state) {
-    return {'users': state.users};
+    try {
+      return {'users': state.users};
+    } catch (_) {}
+    return null;
   }
 }
