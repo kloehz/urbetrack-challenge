@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'planets_model.dart';
+part of 'starship_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,53 +14,54 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-PlanetsModel _$PlanetsModelFromJson(Map<String, dynamic> json) {
-  return _PlanetsModel.fromJson(json);
+StarshipModel _$StarshipModelFromJson(Map<String, dynamic> json) {
+  return _StarshipModel.fromJson(json);
 }
 
 /// @nodoc
-class _$PlanetsModelTearOff {
-  const _$PlanetsModelTearOff();
+class _$StarshipModelTearOff {
+  const _$StarshipModelTearOff();
 
-  _PlanetsModel call({required String name}) {
-    return _PlanetsModel(
+  _StarshipModel call({required String name}) {
+    return _StarshipModel(
       name: name,
     );
   }
 
-  PlanetsModel fromJson(Map<String, Object?> json) {
-    return PlanetsModel.fromJson(json);
+  StarshipModel fromJson(Map<String, Object?> json) {
+    return StarshipModel.fromJson(json);
   }
 }
 
 /// @nodoc
-const $PlanetsModel = _$PlanetsModelTearOff();
+const $StarshipModel = _$StarshipModelTearOff();
 
 /// @nodoc
-mixin _$PlanetsModel {
+mixin _$StarshipModel {
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PlanetsModelCopyWith<PlanetsModel> get copyWith =>
+  $StarshipModelCopyWith<StarshipModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PlanetsModelCopyWith<$Res> {
-  factory $PlanetsModelCopyWith(
-          PlanetsModel value, $Res Function(PlanetsModel) then) =
-      _$PlanetsModelCopyWithImpl<$Res>;
+abstract class $StarshipModelCopyWith<$Res> {
+  factory $StarshipModelCopyWith(
+          StarshipModel value, $Res Function(StarshipModel) then) =
+      _$StarshipModelCopyWithImpl<$Res>;
   $Res call({String name});
 }
 
 /// @nodoc
-class _$PlanetsModelCopyWithImpl<$Res> implements $PlanetsModelCopyWith<$Res> {
-  _$PlanetsModelCopyWithImpl(this._value, this._then);
+class _$StarshipModelCopyWithImpl<$Res>
+    implements $StarshipModelCopyWith<$Res> {
+  _$StarshipModelCopyWithImpl(this._value, this._then);
 
-  final PlanetsModel _value;
+  final StarshipModel _value;
   // ignore: unused_field
-  final $Res Function(PlanetsModel) _then;
+  final $Res Function(StarshipModel) _then;
 
   @override
   $Res call({
@@ -76,30 +77,31 @@ class _$PlanetsModelCopyWithImpl<$Res> implements $PlanetsModelCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$PlanetsModelCopyWith<$Res>
-    implements $PlanetsModelCopyWith<$Res> {
-  factory _$PlanetsModelCopyWith(
-          _PlanetsModel value, $Res Function(_PlanetsModel) then) =
-      __$PlanetsModelCopyWithImpl<$Res>;
+abstract class _$StarshipModelCopyWith<$Res>
+    implements $StarshipModelCopyWith<$Res> {
+  factory _$StarshipModelCopyWith(
+          _StarshipModel value, $Res Function(_StarshipModel) then) =
+      __$StarshipModelCopyWithImpl<$Res>;
   @override
   $Res call({String name});
 }
 
 /// @nodoc
-class __$PlanetsModelCopyWithImpl<$Res> extends _$PlanetsModelCopyWithImpl<$Res>
-    implements _$PlanetsModelCopyWith<$Res> {
-  __$PlanetsModelCopyWithImpl(
-      _PlanetsModel _value, $Res Function(_PlanetsModel) _then)
-      : super(_value, (v) => _then(v as _PlanetsModel));
+class __$StarshipModelCopyWithImpl<$Res>
+    extends _$StarshipModelCopyWithImpl<$Res>
+    implements _$StarshipModelCopyWith<$Res> {
+  __$StarshipModelCopyWithImpl(
+      _StarshipModel _value, $Res Function(_StarshipModel) _then)
+      : super(_value, (v) => _then(v as _StarshipModel));
 
   @override
-  _PlanetsModel get _value => super._value as _PlanetsModel;
+  _StarshipModel get _value => super._value as _StarshipModel;
 
   @override
   $Res call({
     Object? name = freezed,
   }) {
-    return _then(_PlanetsModel(
+    return _then(_StarshipModel(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -110,25 +112,25 @@ class __$PlanetsModelCopyWithImpl<$Res> extends _$PlanetsModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_PlanetsModel implements _PlanetsModel {
-  const _$_PlanetsModel({required this.name});
+class _$_StarshipModel implements _StarshipModel {
+  const _$_StarshipModel({required this.name});
 
-  factory _$_PlanetsModel.fromJson(Map<String, dynamic> json) =>
-      _$$_PlanetsModelFromJson(json);
+  factory _$_StarshipModel.fromJson(Map<String, dynamic> json) =>
+      _$$_StarshipModelFromJson(json);
 
   @override
   final String name;
 
   @override
   String toString() {
-    return 'PlanetsModel(name: $name)';
+    return 'StarshipModel(name: $name)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _PlanetsModel &&
+            other is _StarshipModel &&
             const DeepCollectionEquality().equals(other.name, name));
   }
 
@@ -138,25 +140,25 @@ class _$_PlanetsModel implements _PlanetsModel {
 
   @JsonKey(ignore: true)
   @override
-  _$PlanetsModelCopyWith<_PlanetsModel> get copyWith =>
-      __$PlanetsModelCopyWithImpl<_PlanetsModel>(this, _$identity);
+  _$StarshipModelCopyWith<_StarshipModel> get copyWith =>
+      __$StarshipModelCopyWithImpl<_StarshipModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PlanetsModelToJson(this);
+    return _$$_StarshipModelToJson(this);
   }
 }
 
-abstract class _PlanetsModel implements PlanetsModel {
-  const factory _PlanetsModel({required String name}) = _$_PlanetsModel;
+abstract class _StarshipModel implements StarshipModel {
+  const factory _StarshipModel({required String name}) = _$_StarshipModel;
 
-  factory _PlanetsModel.fromJson(Map<String, dynamic> json) =
-      _$_PlanetsModel.fromJson;
+  factory _StarshipModel.fromJson(Map<String, dynamic> json) =
+      _$_StarshipModel.fromJson;
 
   @override
   String get name;
   @override
   @JsonKey(ignore: true)
-  _$PlanetsModelCopyWith<_PlanetsModel> get copyWith =>
+  _$StarshipModelCopyWith<_StarshipModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -19,6 +19,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       starships:
           (json['starships'] as List<dynamic>).map((e) => e as String).toList(),
       gender: json['gender'] as String,
+      isReported: json['isReported'] as bool?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
@@ -33,4 +34,5 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'vehicles': instance.vehicles,
       'starships': instance.starships,
       'gender': instance.gender,
+      'isReported': instance.isReported,
     };

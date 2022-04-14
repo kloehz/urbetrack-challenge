@@ -6,6 +6,6 @@ enum UsersStatus { loading, success, failure }
 class UsersState with _$UsersState {
   const factory UsersState.initial({
     @Default(UsersStatus.loading) UsersStatus status,
-    List<UserModel>? users,
+    Map<String, UserModel>? users,
   }) = _UsersState;
 }

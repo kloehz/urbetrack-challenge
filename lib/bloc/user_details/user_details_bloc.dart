@@ -1,47 +1,73 @@
-import 'package:urbetrack/models/planet/planet_model.dart';
-import 'package:urbetrack/models/user/user_model.dart';
-import 'package:urbetrack/models/vehicle/vehicle_model.dart';
-import 'package:urbetrack/services/user_details_service.dart';
-import 'package:urbetrack/utils/url_utils.dart';
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:urbetrack/bloc/users/users_bloc.dart';
+import 'package:urbetrack/models/starship/starship_model.dart';
+import 'package:urbetrack/models/user/user_model.dart';
+import 'package:urbetrack/services/user_details_service.dart';
+import 'package:urbetrack/utils/url_utils.dart';
 
 part 'user_details_event.dart';
 part 'user_details_state.dart';
 part 'user_details_bloc.freezed.dart';
 
 class UserDetailsBloc extends Bloc<UserDetailsEvent, UserDetailsState> {
-  UserDetailsBloc() : super(const _UserDetailsState()) {
-    on<_Loading>((event, emit) => getPlanet(emit, event));
+  UserDetailsBloc() : super(const _UserDetails()) {
+    on<_FetchUserDetails>((event, emit) => _fetchUserDetails(emit, event));
   }
 
-  void getPlanet(Emitter<UserDetailsState> emit, _Loading event) async {
-    emit(
-      state.copyWith(planet: null, status: UserDetailsStatus.loading, vehicles: null)
-    );
+  _fetchUserDetails(Emitter<UserDetailsState> emit, _FetchUserDetails event) async {
+
+    emit(state.copyWith(status: UserDetailsStatus.loading));
+
+    List<String> vehiclesParsed = [];
+    List<String> starShipsParsed = [];
 
     try {
-      final planetId = getUrlLastId(event.user.homeworld);
-      final PlanetModel planet = await UserDetailsService().getPlanet(planetId: planetId);
-      emit(
-        state.copyWith(planet: planet)
-      );
-    } catch (err) {
-      emit(state.copyWith(status: UserDetailsStatus.failure, planet: null));
-    }
-    try {
-      final List<String>vehiclesIds = [];
+      
+      String planet = event.user.homeworld;
 
-      for (var vehicle in event.user.vehicles) {
-        vehiclesIds.add(getUrlLastId(vehicle));
+      if(event.user.homeworld.startsWith('http')){
+        final planetId = getUrlLastId(event.user.homeworld);
+        final planetFetched =  await UserDetailsService().getPlanet(planetId: planetId);
+        planet = planetFetched.name;
       }
-      final List<VehicleModel?> vehicles = await UserDetailsService().getVehicles(vehicles: vehiclesIds);
-      return emit(
-        state.copyWith(status: UserDetailsStatus.success, vehicles: vehicles)
-      );
+
+        final updatedVehicles = event.user.vehicles.where((vehicle) => vehicle.startsWith('http')).toList();
+        if(updatedVehicles.isNotEmpty) {
+          final List<String>vehiclesIds = [];
+
+          for (var vehicle in updatedVehicles) {
+            vehiclesIds.add(getUrlLastId(vehicle));
+          }
+          final vehicles = await UserDetailsService().getVehicles(vehicles: vehiclesIds);
+          vehicles.map((item) => vehiclesParsed.add(item!.name)).toList();
+        } else {
+          vehiclesParsed = event.user.vehicles;
+        }
+
+        final updatedStarships = event.user.starships.where((starships) => starships.startsWith('http')).toList();
+
+        if(updatedStarships.isNotEmpty) {
+          final List<String>starshipsId = [];
+          for (var starship in updatedStarships) {
+            starshipsId.add(getUrlLastId(starship));
+          }
+          final List<StarshipModel?> starships = await UserDetailsService().getStarships(starships: starshipsId);
+          starships.map((starship) => starShipsParsed.add(starship!.name)).toList();
+        } else {
+          starShipsParsed = event.user.starships;
+        }
+
+        final userUpdated = event.user.copyWith(
+          homeworld: planet,
+          vehicles: vehiclesParsed,
+          starships: starShipsParsed
+        );
+
+        emit(state.copyWith(status: UserDetailsStatus.success, user: userUpdated));
+        event.userbloc.add(UsersEvent.fetchUserDetails(user: userUpdated));
     } catch (err) {
-      emit(state.copyWith(status: UserDetailsStatus.failure, vehicles: null));
+      //Log
     }
   }
 }
