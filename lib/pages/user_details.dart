@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:urbetrack/bloc/network/network_bloc.dart';
+import 'package:urbetrack/bloc/user_details/user_details_bloc.dart';
 import 'package:urbetrack/bloc/users/users_bloc.dart';
 import 'package:urbetrack/models/user/user_model.dart';
 import 'package:urbetrack/utils/string_utils.dart';
@@ -18,7 +19,8 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    context.read<UsersBloc>().add(UsersEvent.fetchUserDetails(user: widget.user));
+    final usersBloc = BlocProvider.of<UsersBloc>(context);
+    context.read<UserDetailsBloc>().add(UserDetailsEvent.fetchUserDetails(user: widget.user, userbloc: usersBloc));
   }
 
   @override
@@ -45,11 +47,11 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
           );
         },
       ),
-      body: BlocBuilder<UsersBloc, UsersState>(
+      body: BlocBuilder<UserDetailsBloc, UserDetailsState>(
         builder: (context, state) {
           UserModel user = widget.user;
-          if(state.status == UsersStatus.success){
-            user = state.users![widget.user.name]!; // state.users!.firstWhere((user) => user.name == widget.user.name);
+          if(state.status == UserDetailsStatus.success){
+            user = state.user!;
             return UserDetailedInfo(user: user, isLoading: false);
           }
           return UserDetailedInfo(user: user, isLoading: true);
