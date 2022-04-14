@@ -7,6 +7,7 @@ import 'package:urbetrack/bloc/user_details/user_details_bloc.dart';
 import 'package:urbetrack/bloc/users/users_bloc.dart';
 import 'package:urbetrack/config/constants/routes_constants.dart';
 import 'package:urbetrack/config/routes/routes.dart' as routes;
+import 'package:urbetrack/config/themes/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,11 +31,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => NetworkBloc()),
         BlocProvider(create: (_) => UserDetailsBloc())
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'Material App',
         initialRoute: RoutesNames.homePage,
         onGenerateRoute: routes.controller,
-      )
+        theme: Themes.darkTheme
+      ),
     );
   }
 }

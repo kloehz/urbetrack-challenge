@@ -24,10 +24,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     context.read<UsersBloc>().add(const UsersEvent.fetchUsers());
     scrollController.addListener(() {
-      if ((scrollController.position.pixels + 10) >= scrollController.position.maxScrollExtent) {
-        // if (scrollController.hasClients)
-        //   context.read<UsersBloc>().add(const UsersEvent.fetchUsers());
-      }
+      // if ((scrollController.position.pixels + 10) >= scrollController.position.maxScrollExtent) {}
     });
   }
 
@@ -49,10 +46,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue
-                ),
-                child: Text('Opciones', style: TextStyle(
+                child: Text('Options', style: TextStyle(
                   fontSize: 24
                 ))
               ),
@@ -64,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 20
                     )),
                     Switch(
-                      activeColor: Colors.green,
+                      activeColor: Colors.white,
                       value: state.networkStatus,
                       onChanged: (value) =>
                         internetStatus.add(NetworkEvent.networkChanged(value))
@@ -85,6 +79,7 @@ class _HomePageState extends State<HomePage> {
             }
             return Center(
               child: RefreshIndicator(
+                color: Colors.indigo[400],
                 onRefresh: () => _getUsers(),
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -112,8 +107,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _getUsers() async {
-    // final usersBloc = BlocProvider.of<UsersBloc>(context);
-    // usersBloc.add(const UsersEvent.fetchUsers());
+    // Just to show that we can reset the users
+    final usersBloc = BlocProvider.of<UsersBloc>(context);
+    usersBloc.add(const UsersEvent.fetchUsers(isRefresh: true));
   }
 }
 
@@ -144,7 +140,37 @@ class UserWiget extends StatelessWidget {
             )
           ]
         ),
+        child: _renderUser(user)
+      ),
+    );
+  }
+
+  _renderUser(UserModel user) {
+    if(user.isReported == true){
+      return ReportedUser(user: user);
+    }
+    return NormalUser(user: user);
+  }
+
+}
+
+class ReportedUser extends StatelessWidget {
+  const ReportedUser({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
+
+  final UserModel user;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      child: Banner(
+        location: BannerLocation.topStart,
+        message: 'Reported',
         child: ListTile(
+
+          textColor: Colors.black,
           leading: Hero(
             tag: user.name,
             child: const CircleAvatar(
@@ -152,10 +178,35 @@ class UserWiget extends StatelessWidget {
           ),
           title: Text(user.name),
           subtitle: Text(
-              'Peso: ${user.mass} - Size: ${user.height} - Sex: ${user.gender.capitalize()}'),
+              'Weight: ${user.mass} - Size: ${user.height} - Sex: ${user.gender.capitalize()}'),
           trailing: const Icon(Icons.arrow_forward),
         ),
       ),
+    );
+  }
+}
+
+class NormalUser extends StatelessWidget {
+  const NormalUser({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
+
+  final UserModel user;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      textColor: Colors.black,
+      leading: Hero(
+        tag: user.name,
+        child: const CircleAvatar(
+            backgroundImage: AssetImage('assets/images/basic_avatar.jpeg')),
+      ),
+      title: Text(user.name),
+      subtitle: Text(
+          'Peso: ${user.mass} - Size: ${user.height} - Sex: ${user.gender.capitalize()}'),
+      trailing: const Icon(Icons.arrow_forward),
     );
   }
 }

@@ -32,7 +32,7 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
         builder: (context, state) {
           return ElevatedButton(
             child: Text(
-              state.networkStatus ? 'Reportar' : 'Offline',
+              state.networkStatus ? 'Report' : 'Offline',
               style: const TextStyle(fontSize: 18),
             ),
             style: ButtonStyle(
@@ -43,7 +43,7 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
                 ),
               ),
             ),
-            onPressed: state.networkStatus ? () {} : null,
+            onPressed: state.networkStatus ? _reportUser : null,
           );
         },
       ),
@@ -57,6 +57,47 @@ class _UserDetailsState extends State<UserDetails> with AutomaticKeepAliveClient
           return UserDetailedInfo(user: user, isLoading: true);
         },
       )
+    );
+  }
+
+  _reportUser(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm', textAlign: TextAlign.center,),
+          content: const Text('Report this user?', style: TextStyle(fontSize: 20)),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: (){ Navigator.pop(context); },
+                  child: const Text('Cancel', style: TextStyle(fontSize: 18),)
+                ),
+                TextButton(
+                  onPressed: (){
+                    context.read<UsersBloc>().add(UsersEvent.reportUser(user: widget.user));
+                    _showToast(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Accept', style: TextStyle(fontSize: 18),)
+                )
+              ]
+            )
+          ],
+        );
+      }
+    );
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      const SnackBar(
+        content: Text('Reported'),
+      ),
     );
   }
 
@@ -77,7 +118,7 @@ class UserDetailedInfo extends StatelessWidget {
   List<Text> parseInfo(List<String> data) {
     return data.map((starship) {
       return starship.startsWith('http')
-      ? const Text('Cargando')
+      ? const Text('Loading')
       : Text(starship);
     }).toList();
   }
@@ -85,7 +126,7 @@ class UserDetailedInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final String homeworld = user.homeworld.startsWith('http') ? 'Cargando...' : user.homeworld;
+    final String homeworld = user.homeworld.startsWith('http') ? 'Loading...' : user.homeworld;
     final List<Text> vehicles = parseInfo(user.vehicles);
     final List<Text> starships = parseInfo(user.starships);
 
@@ -128,7 +169,7 @@ class UserDetailedInfo extends StatelessWidget {
             ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: isLoading
-                ? [ const Text('Cargando') ]
+                ? [ const Text('Loading') ]
                 :  vehicles
             )
             : const Text('N/A')
@@ -141,7 +182,7 @@ class UserDetailedInfo extends StatelessWidget {
             ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: isLoading
-                ? [ const Text('Cargando') ]
+                ? [ const Text('Loading') ]
                 : starships
             )
             : const Text('N/A')

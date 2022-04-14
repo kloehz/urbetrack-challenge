@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:urbetrack/bloc/users/users_bloc.dart';
-import 'package:urbetrack/models/planet/planet_model.dart';
 import 'package:urbetrack/models/starship/starship_model.dart';
 import 'package:urbetrack/models/user/user_model.dart';
 import 'package:urbetrack/services/user_details_service.dart';

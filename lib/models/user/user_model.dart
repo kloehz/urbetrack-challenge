@@ -16,6 +16,7 @@ class UserModel with _$UserModel{
     required List<String> vehicles,
     required List<String> starships,
     required String gender,
+    bool? isReported
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

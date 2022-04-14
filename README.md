@@ -1,16 +1,20 @@
-# urbetrack
+## Challenge Urbetrack
 
-A new Flutter project.
+Challenge realizado en flutter por Guido Leonel Cotelesso
 
-## Getting Started
+![](https://is5-ssl.mzstatic.com/image/thumb/Purple116/v4/05/c4/13/05c413f1-a468-3900-ad88-89a193ce5c66/source/512x512bb.jpg)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+# Como iniciar el proyecto:
+- Abrir el proyecto con el editor de codigo favorito
+- Ejecutar el comando **flutter pub get** en la carpeta del proyecto para instalar dependencias
+- Iniciar un emulador o conectar un telefono (android) con depuracion USB
+- Seleccionar el dispositivo en el editor de codigo
+- Correr el codigo en el emulador o telefono seleccionado
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Wish:
+-- Todo esto lo voy a estar agregando en una rama llamada **wish**:
+- Al llegar al final de la lista pedir mas usuarios
+- Hacer un slide de imagenes para una intro mas amigable
+- Splashcreen

@@ -13,11 +13,12 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
   UsersBloc() : super(const _UsersState()) {
     on<_FetchUsers>((event, emit) => _getUsers(emit, event));
     on<_FetchUserDetails>((event, emit) => _getUserDetails(emit, event));
+    on<_ReportUser>((event, emit) => _reportUser(emit, event));
   }
 
   void _getUsers(Emitter<UsersState> emit, _FetchUsers event) async {
     try {
-      if(state.users == null && state.status == UsersStatus.loading) {
+      if(event.isRefresh == true || state.users == null && state.status == UsersStatus.loading) {
         final UsersResponseModel users = await UsersService().getUsers();
 
         // Parse this for manage it by id and not iterate it everytime
@@ -53,6 +54,19 @@ class UsersBloc extends HydratedBloc<UsersEvent, UsersState> {
           )
         );
     } catch (err) {
+      //Log
+      emit(state.copyWith(status: UsersStatus.failure));
+    }
+  }
+
+  _reportUser(Emitter<UsersState> emit, _ReportUser event) {
+    try{
+      emit(state.copyWith(status: UsersStatus.loading));
+      final userReported = event.user.copyWith(isReported: true);
+      final usersUpdated = state.users;
+      usersUpdated![event.user.name] = userReported;
+      emit(state.copyWith(users: usersUpdated, status: UsersStatus.success));
+    }catch(err){
       //Log
       emit(state.copyWith(status: UsersStatus.failure));
     }

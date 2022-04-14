@@ -32,7 +32,8 @@ class _$UserModelTearOff {
       required String homeworld,
       required List<String> vehicles,
       required List<String> starships,
-      required String gender}) {
+      required String gender,
+      bool? isReported}) {
     return _UserModel(
       name: name,
       height: height,
@@ -44,6 +45,7 @@ class _$UserModelTearOff {
       vehicles: vehicles,
       starships: starships,
       gender: gender,
+      isReported: isReported,
     );
   }
 
@@ -67,6 +69,7 @@ mixin _$UserModel {
   List<String> get vehicles => throw _privateConstructorUsedError;
   List<String> get starships => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
+  bool? get isReported => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -88,7 +91,8 @@ abstract class $UserModelCopyWith<$Res> {
       String homeworld,
       List<String> vehicles,
       List<String> starships,
-      String gender});
+      String gender,
+      bool? isReported});
 }
 
 /// @nodoc
@@ -111,6 +115,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? vehicles = freezed,
     Object? starships = freezed,
     Object? gender = freezed,
+    Object? isReported = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -153,6 +158,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as String,
+      isReported: isReported == freezed
+          ? _value.isReported
+          : isReported // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -173,7 +182,8 @@ abstract class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String homeworld,
       List<String> vehicles,
       List<String> starships,
-      String gender});
+      String gender,
+      bool? isReported});
 }
 
 /// @nodoc
@@ -197,6 +207,7 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? vehicles = freezed,
     Object? starships = freezed,
     Object? gender = freezed,
+    Object? isReported = freezed,
   }) {
     return _then(_UserModel(
       name: name == freezed
@@ -239,6 +250,10 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as String,
+      isReported: isReported == freezed
+          ? _value.isReported
+          : isReported // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -256,7 +271,8 @@ class _$_UserModel implements _UserModel {
       required this.homeworld,
       required this.vehicles,
       required this.starships,
-      required this.gender});
+      required this.gender,
+      this.isReported});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -281,10 +297,12 @@ class _$_UserModel implements _UserModel {
   final List<String> starships;
   @override
   final String gender;
+  @override
+  final bool? isReported;
 
   @override
   String toString() {
-    return 'UserModel(name: $name, height: $height, mass: $mass, hair_color: $hair_color, skin_color: $skin_color, eye_color: $eye_color, homeworld: $homeworld, vehicles: $vehicles, starships: $starships, gender: $gender)';
+    return 'UserModel(name: $name, height: $height, mass: $mass, hair_color: $hair_color, skin_color: $skin_color, eye_color: $eye_color, homeworld: $homeworld, vehicles: $vehicles, starships: $starships, gender: $gender, isReported: $isReported)';
   }
 
   @override
@@ -303,7 +321,9 @@ class _$_UserModel implements _UserModel {
             const DeepCollectionEquality().equals(other.homeworld, homeworld) &&
             const DeepCollectionEquality().equals(other.vehicles, vehicles) &&
             const DeepCollectionEquality().equals(other.starships, starships) &&
-            const DeepCollectionEquality().equals(other.gender, gender));
+            const DeepCollectionEquality().equals(other.gender, gender) &&
+            const DeepCollectionEquality()
+                .equals(other.isReported, isReported));
   }
 
   @override
@@ -318,7 +338,8 @@ class _$_UserModel implements _UserModel {
       const DeepCollectionEquality().hash(homeworld),
       const DeepCollectionEquality().hash(vehicles),
       const DeepCollectionEquality().hash(starships),
-      const DeepCollectionEquality().hash(gender));
+      const DeepCollectionEquality().hash(gender),
+      const DeepCollectionEquality().hash(isReported));
 
   @JsonKey(ignore: true)
   @override
@@ -342,7 +363,8 @@ abstract class _UserModel implements UserModel {
       required String homeworld,
       required List<String> vehicles,
       required List<String> starships,
-      required String gender}) = _$_UserModel;
+      required String gender,
+      bool? isReported}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -367,6 +389,8 @@ abstract class _UserModel implements UserModel {
   List<String> get starships;
   @override
   String get gender;
+  @override
+  bool? get isReported;
   @override
   @JsonKey(ignore: true)
   _$UserModelCopyWith<_UserModel> get copyWith =>

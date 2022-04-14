@@ -1,6 +1,6 @@
 part of 'users_bloc.dart';
 
-enum UsersStatus { loading, success, failure, updatingUser }
+enum UsersStatus { loading, success, failure }
 
 @freezed
 class UsersState with _$UsersState {
