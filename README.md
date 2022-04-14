@@ -10,6 +10,7 @@ Challenge realizado en flutter por Guido Leonel Cotelesso
 - Ejecutar el comando **flutter pub get** en la carpeta del proyecto para instalar dependencias
 - Iniciar un emulador o conectar un telefono (android) con depuracion USB
 - Seleccionar el dispositivo en el editor de codigo
+- Ejecutar **flutter pub run build_runner** para generar codigo de la lib **freezed**
 - Correr el codigo en el emulador o telefono seleccionado
 
 
